@@ -20,6 +20,10 @@ class Settings:
     POSTGRES_DB : str = os.getenv("POSTGRES_DB", "plataforma-crowfunding")
     DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
 
+    SECRET_KEY : str = os.getenv("SECRET_KEY")
+    ACCESS_TOKEN_EXPIRE_MINUTES : int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 1440)) # 24 Horas
+    ALGORITHM : str = "HS256"
+
     SERVER_APP: str = "main:app"
     SERVER_HOST: str = os.getenv("SERVER_HOST", "127.0.0.1")
     SERVER_PORT: int = int(os.getenv("SERVER_PORT", 8000))

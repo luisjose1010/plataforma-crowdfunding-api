@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from typing import Annotated
 from schemas.user import User, UserCreate, UserProjects
 from schemas.project import Project, ProjectCreate
-from dependencies import get_db
+from dependencies import get_db, get_token_subject
 from crud import crud_user
 
 
@@ -47,6 +48,10 @@ def read_project_of_user(user_id: int, db: Session = Depends(get_db)):
 
 @router.post("/{user_id}/projects/", response_model=Project)
 def create_project_for_user(
-    user_id: int, project: ProjectCreate, db: Session = Depends(get_db)
+    user_id: int, project: ProjectCreate,
+    token_subject: Annotated[str, Depends(get_token_subject)],
+    db: Annotated[Session, Depends(get_db)]
 ):
+    if not str(token_subject) == str(user_id):
+        raise HTTPException(status_code=401, detail="User not authorized")
     return crud_user.create_user_project(db=db, project=project, user_id=user_id)
