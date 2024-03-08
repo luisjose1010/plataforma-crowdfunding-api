@@ -10,6 +10,16 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str
 
+class UserUpdate(BaseModel):
+    id_card: str | None = None
+    email: str | None = None
+    name: str | None = None
+    password: str | None = None
+    new_password: str | None = None
+    avatar: str | None = None
+    is_active: bool | None = None
+    is_superuser: bool | None = None
+
 class User(UserBase):
     id: int
     avatar: str | None = None

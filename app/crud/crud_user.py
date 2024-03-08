@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from db import models
-from schemas.user import UserCreate
+from schemas.user import UserCreate, UserUpdate
 from schemas.project import ProjectCreate
 from core.hashing import Hasher
 
@@ -32,3 +32,13 @@ def create_user_project(db: Session, project: ProjectCreate, user_id: int):
     db.commit()
     db.refresh(db_item)
     return db_item
+
+
+def update_user(db: Session, user_id: int, user: UserUpdate):
+    db_user = db.query(models.User).filter(models.User.id == user_id)
+    if user.new_password:
+        hashed_password = Hasher.get_password_hash(user.new_password)
+        db_user.update({"password": hashed_password})
+    db_user.update(user.model_dump(exclude_unset=True, exclude=["password", "new_password"]))
+    db.commit()
+    return db_user.first()
