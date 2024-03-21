@@ -37,7 +37,7 @@ def create_user_project(db: Session, project: ProjectCreate, user_id: int):
     return db_item
 
 
-def update_user(db: Session, user_id: int, user: UserUpdate, token_user: models.User):
+def update_user(db: Session, user_id: int, user: UserUpdate, token_user: models.User = None):
     db_user = db.query(models.User).filter(models.User.id == user_id)
     if user.new_password:
         hashed_password = Hasher.get_password_hash(user.new_password)

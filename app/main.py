@@ -9,7 +9,7 @@ from db.database import Base, engine
 from schemas.token import Token
 from crud.crud_login import authenticate_user
 from dependencies import get_db, get_token_data
-from routers import users, projects, categories, transactions
+from routers import users, projects, categories, transactions, images
 
 
 def create_tables():         
@@ -37,7 +37,7 @@ app.include_router(users.router)
 app.include_router(projects.router)
 app.include_router(categories.router)
 app.include_router(transactions.router)
-
+app.include_router(images.router)
 
 @app.get("/")
 async def root():
