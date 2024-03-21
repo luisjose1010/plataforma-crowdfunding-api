@@ -42,6 +42,6 @@ def get_token_data(token: Annotated[str, Depends(oauth2_scheme)]):
         if payload is None:
             raise credentials_exception
     except JWTError as Error:
-        credentials_exception.detail(Error)
+        credentials_exception.detail = str(Error)
         raise credentials_exception
     return payload

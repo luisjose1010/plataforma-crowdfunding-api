@@ -15,3 +15,4 @@ class User(Base):
     is_active = Column(Boolean(), default=True)
 
     projects = relationship("Project", back_populates="user")
+    transactions = relationship("Transaction", back_populates="user")

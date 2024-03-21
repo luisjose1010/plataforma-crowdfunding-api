@@ -116,28 +116,12 @@ def upgrade() -> None:
 
     op.bulk_insert(project_table, [
         {
-            "title": "Proyecto de ejemplo 1",
-            "description": "Este proyecto es un ejemplo con su respectiva descripción propiedad del usuario Admin.",
-            "donated": 100,
-            "goal": 1000,
-            "user_id": 1,
-            "category_id": 1,
-        },
-        {
-            "title": "Proyecto de ejemplo 2",
-            "description": "Este otro proyecto es otro ejemplo con su respectiva descripción propiedad del usuario Admin.",
-            "donated": 1000,
-            "goal": 5000,
-            "user_id": 1,
-            "category_id": 2,
-        },
-        {
-            "title": "Proyecto de ejemplo 3",
-            "description": "Este es el tercer y último proyecto de ejemplo con su respectiva descripción propiedad del usuario Admin.",
+            "title": "Plataforma Crowdfunding",
+            "description": "Proyecto que representa a la aplicación actual, para habilitar la contribución en forma de donaciones a esta pequeña iniciativa.",
             "donated": 0,
-            "goal": 100,
+            "goal": 0,
             "user_id": 1,
-            "category_id": 2,
+            "category_id": 6,
         },
     ])
 

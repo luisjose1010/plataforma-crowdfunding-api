@@ -12,7 +12,7 @@ class Category(Base):
     url = Column(String, nullable=False, unique=True, index=True)
     projects_count = column_property(
         # No entiendo esta query, pero obtiene la cantidad de proyectos de la categoria
-        select(func.count(models.Project.category_id)).filter(models.Project.category_id == id).scalar_subquery(),
+        select(func.count(models.Project.category_id)).filter(models.Project.category_id == id).filter(models.Project.is_verified == True).scalar_subquery(),
         deferred=True,
     )
 

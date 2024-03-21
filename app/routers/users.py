@@ -19,11 +19,11 @@ router = APIRouter(
 
 
 @router.get("/", response_model=list[User])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = crud_user.get_users(db, skip=skip, limit=limit)
+def read_users(skip: int = 0, limit: int = 100, id_card: str = None, db: Session = Depends(get_db)):
+    users = crud_user.get_users(db, id_card=id_card, skip=skip, limit=limit)
     return users
 
-@router.get("/count", response_model=int)
+@router.get("/count/", response_model=int)
 def read_users_count(db: Session = Depends(get_db)):
     return crud_user.get_users_count(db)
 
@@ -60,14 +60,16 @@ def update_user(
     token_subject: Annotated[str, Depends(get_token_subject)],
     db: Annotated[Session, Depends(get_db)]
 ):
+    token_user = crud_user.get_user(db, token_subject)
+
     if user.new_password:
         if not crud_login.authenticate_user_id(db, user_id=user_id, password=user.password):
             raise HTTPException(status_code=401, detail="Incorrect password")
-    if not str(token_subject) == str(user_id):
+    if not str(token_subject) == str(user_id) and not token_user.is_superuser:
         raise HTTPException(status_code=403, detail="User not authorized")
 
     try:
-        db_user = crud_user.update_user(db, user_id=user_id, user=user)
+        db_user = crud_user.update_user(db, user_id=user_id, user=user, token_user=token_user)
     except IntegrityError as Error:
         db.rollback()
         orig_error = UniqueViolation(Error.orig).args[0].diag

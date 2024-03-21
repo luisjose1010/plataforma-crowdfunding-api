@@ -38,3 +38,6 @@ class UserProjects(User):
 
     class Config:
         orm_mode = True
+
+class ProjectUser(Project):
+    user: User
